@@ -6,11 +6,4 @@ node_modules/
 out/
 *.tsbuildinfo
 next-env.d.ts
-.opencode/
-hand-off.md
-architecture.md
-api-spec.md
-AGENTS.md
-design-system/
-task.md
-skills-lock.json
+

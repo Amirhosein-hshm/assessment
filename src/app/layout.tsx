@@ -1,3 +1,4 @@
+import "./providers/wdyr"
 import type { Metadata } from "next"
 import { Fira_Code, Fira_Sans } from "next/font/google"
 import { QueryProvider } from "@/app/providers/query-provider"

@@ -45,8 +45,8 @@ export function UsersSearch({ params, onParamsChange }: UsersSearchProps) {
       <div className="flex gap-2">
         <Select
           value={params.sortBy}
-          onValueChange={(value: SortField) =>
-            onParamsChange({ sortBy: value })
+          onValueChange={(value: string | null) =>
+            value && onParamsChange({ sortBy: value as SortField })
           }
         >
           <SelectTrigger className="w-[130px]">
@@ -60,8 +60,8 @@ export function UsersSearch({ params, onParamsChange }: UsersSearchProps) {
         </Select>
         <Select
           value={params.sortOrder}
-          onValueChange={(value: SortOrder) =>
-            onParamsChange({ sortOrder: value })
+          onValueChange={(value: string | null) =>
+            value && onParamsChange({ sortOrder: value as SortOrder })
           }
         >
           <SelectTrigger className="w-[130px]">

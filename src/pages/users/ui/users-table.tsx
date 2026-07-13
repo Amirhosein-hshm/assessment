@@ -23,6 +23,7 @@ const ROW_HEIGHT = 52
 interface UsersTableProps {
   users: User[]
   isLoading: boolean
+  hasFilters?: boolean
   onSelectUser: (user: User) => void
 }
 
@@ -63,7 +64,7 @@ function EmptyState({ hasFilters }: { hasFilters: boolean }) {
   )
 }
 
-export function UsersTable({ users, isLoading, onSelectUser }: UsersTableProps) {
+export function UsersTable({ users, isLoading, hasFilters = false, onSelectUser }: UsersTableProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const virtualizer = useVirtualizer({
@@ -94,7 +95,7 @@ export function UsersTable({ users, isLoading, onSelectUser }: UsersTableProps) 
           {isLoading ? (
             <SkeletonRows />
           ) : users.length === 0 ? (
-            <EmptyState hasFilters={false} />
+            <EmptyState hasFilters={hasFilters} />
           ) : (
             <TableBody
               className="relative"

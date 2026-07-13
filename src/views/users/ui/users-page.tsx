@@ -59,7 +59,7 @@ export function UsersPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="container mx-auto max-w-7xl p-4 md:p-8 flex flex-col gap-8">
       <div>
         <h1 className="font-heading text-2xl font-bold text-foreground">
           Users

@@ -19,6 +19,7 @@ import {
 import type { User } from "../model/user"
 
 const ROW_HEIGHT = 52
+const gridCols = "grid-cols-[1.5fr_2fr_1.5fr_1.5fr]"
 
 interface UsersTableProps {
   users: User[]
@@ -31,17 +32,17 @@ function SkeletonRows() {
   return (
     <TableBody>
       {Array.from({ length: 10 }).map((_, i) => (
-        <TableRow key={i} style={{ height: ROW_HEIGHT }}>
-          <TableCell className="w-[180px]">
+        <TableRow key={i} className={`grid ${gridCols}`} style={{ height: ROW_HEIGHT }}>
+          <TableCell className="flex items-center truncate">
             <Skeleton className="h-4 w-32" />
           </TableCell>
-          <TableCell className="w-[220px]">
+          <TableCell className="flex items-center truncate">
             <Skeleton className="h-4 w-44" />
           </TableCell>
-          <TableCell className="w-[180px]">
+          <TableCell className="flex items-center truncate">
             <Skeleton className="h-4 w-36" />
           </TableCell>
-          <TableCell className="w-[160px]">
+          <TableCell className="flex items-center truncate">
             <Skeleton className="h-4 w-28" />
           </TableCell>
         </TableRow>
@@ -78,11 +79,11 @@ export function UsersTable({ users, isLoading, hasFilters = false, onSelectUser 
     <div className="rounded-lg border">
       <Table>
         <TableHeader>
-          <TableRow>
-            <TableHead className="w-[180px]">Name</TableHead>
-            <TableHead className="w-[220px]">Email</TableHead>
-            <TableHead className="w-[180px]">Phone</TableHead>
-            <TableHead className="w-[160px]">Company</TableHead>
+          <TableRow className={`grid ${gridCols}`}>
+            <TableHead>Name</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>Phone</TableHead>
+            <TableHead>Company</TableHead>
           </TableRow>
         </TableHeader>
       </Table>
@@ -107,14 +108,14 @@ export function UsersTable({ users, isLoading, hasFilters = false, onSelectUser 
                   <TableRow
                     key={user.id}
                     data-index={virtualRow.index}
-                    className="absolute left-0 top-0 flex w-full cursor-pointer border-b transition-all hover:bg-muted/50 active:scale-[0.98]"
+                    className={`absolute left-0 top-0 ${gridCols} grid w-full cursor-pointer border-b transition-all hover:bg-muted/50 active:scale-[0.98]`}
                     style={{
                       height: `${virtualRow.size}px`,
                       transform: `translateY(${virtualRow.start}px)`,
                     }}
                     onClick={() => onSelectUser(user)}
                   >
-                    <TableCell className="flex w-[180px] items-center truncate">
+                    <TableCell className="flex min-w-0 items-center truncate">
                       <Tooltip>
                         <TooltipTrigger className="truncate text-left">
                           {user.name}
@@ -122,7 +123,7 @@ export function UsersTable({ users, isLoading, hasFilters = false, onSelectUser 
                         <TooltipContent>{user.name}</TooltipContent>
                       </Tooltip>
                     </TableCell>
-                    <TableCell className="flex w-[220px] items-center truncate">
+                    <TableCell className="flex min-w-0 items-center truncate">
                       <Tooltip>
                         <TooltipTrigger className="truncate text-left">
                           {user.email}
@@ -130,10 +131,10 @@ export function UsersTable({ users, isLoading, hasFilters = false, onSelectUser 
                         <TooltipContent>{user.email}</TooltipContent>
                       </Tooltip>
                     </TableCell>
-                    <TableCell className="flex w-[180px] items-center truncate">
+                    <TableCell className="flex min-w-0 items-center truncate">
                       {user.phone}
                     </TableCell>
-                    <TableCell className="flex w-[160px] items-center truncate">
+                    <TableCell className="flex min-w-0 items-center truncate">
                       <Tooltip>
                         <TooltipTrigger className="truncate text-left">
                           {user.company.name}

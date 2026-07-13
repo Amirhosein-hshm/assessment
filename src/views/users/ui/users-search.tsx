@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect, useRef } from "react"
 import { Input } from "@/shared/ui/input"
 import {
   Select,
@@ -18,16 +19,49 @@ interface UsersSearchProps {
 }
 
 export function UsersSearch({ params, onParamsChange }: UsersSearchProps) {
+  const [name, setName] = useState(params.name)
+  const [email, setEmail] = useState(params.email)
+  const mounted = useRef(false)
+  const externalSync = useRef(false)
+
+  useEffect(() => {
+    mounted.current = true
+  }, [])
+
+  useEffect(() => {
+    if (!mounted.current) return
+    externalSync.current = true
+    setName(params.name)
+    setEmail(params.email)
+    requestAnimationFrame(() => {
+      externalSync.current = false
+    })
+  }, [params.name, params.email])
+
+  useEffect(() => {
+    if (!mounted.current || externalSync.current) return
+    const timer = setTimeout(() => {
+      onParamsChange({ name, sortBy: "name" })
+    }, 500)
+    return () => clearTimeout(timer)
+  }, [name, onParamsChange])
+
+  useEffect(() => {
+    if (!mounted.current || externalSync.current) return
+    const timer = setTimeout(() => {
+      onParamsChange({ email, sortBy: "email" })
+    }, 500)
+    return () => clearTimeout(timer)
+  }, [email, onParamsChange])
+
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
       <div className="relative flex-1">
         <SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           placeholder="Search by name..."
-          value={params.name}
-          onChange={(e) =>
-            onParamsChange({ name: e.target.value, sortBy: "name" })
-          }
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           className="pl-8"
         />
       </div>
@@ -35,10 +69,8 @@ export function UsersSearch({ params, onParamsChange }: UsersSearchProps) {
         <SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           placeholder="Search by email..."
-          value={params.email}
-          onChange={(e) =>
-            onParamsChange({ email: e.target.value, sortBy: "email" })
-          }
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="pl-8"
         />
       </div>

@@ -76,8 +76,8 @@ export function UsersTable({ users, isLoading, hasFilters = false, onSelectUser 
   })
 
   return (
-    <div className="rounded-lg border">
-      <Table>
+    <div className="rounded-lg border min-w-[800px]">
+      <Table className="min-w-[800px]">
         <TableHeader>
           <TableRow className={`grid ${gridCols}`}>
             <TableHead>Name</TableHead>
@@ -92,7 +92,7 @@ export function UsersTable({ users, isLoading, hasFilters = false, onSelectUser 
         className="overflow-auto"
         style={{ maxHeight: "calc(100vh - 280px)" }}
       >
-        <Table>
+        <Table className="min-w-[800px]">
           {isLoading ? (
             <SkeletonRows />
           ) : users.length === 0 ? (

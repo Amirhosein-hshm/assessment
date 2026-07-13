@@ -1,40 +1,39 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import { Input } from "@/shared/ui/input";
+import { useState, useEffect } from "react"
+import { Input } from "@/shared/ui/input"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/ui/select";
-import { SearchIcon, ArrowUpDownIcon } from "lucide-react";
-import type { SortField, SortOrder, UrlParams } from "../model/user";
+} from "@/shared/ui/select"
+import { SearchIcon, ArrowUpDownIcon } from "lucide-react"
+import { useDebounce } from "@/shared/lib/hooks/use-debounce"
+import type { SortField, SortOrder, UrlParams } from "../model/user"
 
 interface UsersSearchProps {
-  params: UrlParams;
-  onParamsChange: (updates: Partial<UrlParams>) => void;
+  params: UrlParams
+  onParamsChange: (updates: Partial<UrlParams>) => void
 }
 
 export function UsersSearch({ params, onParamsChange }: UsersSearchProps) {
-  const [name, setName] = useState(params.name);
-  const [email, setEmail] = useState(params.email);
+  const [name, setName] = useState(params.name)
+  const [email, setEmail] = useState(params.email)
+
+  const debouncedName = useDebounce(name, 400)
+  const debouncedEmail = useDebounce(email, 400)
 
   useEffect(() => {
-    setName(params.name);
-    setEmail(params.email);
-  }, [params.name, params.email]);
+    setName(params.name)
+    setEmail(params.email)
+  }, [params.name, params.email])
 
   useEffect(() => {
-    if (name === params.name && email === params.email) return;
-
-    const timer = setTimeout(() => {
-      onParamsChange({ name, email });
-    }, 400);
-
-    return () => clearTimeout(timer);
-  }, [name, email, onParamsChange, params.name, params.email]);
+    if (debouncedName === params.name && debouncedEmail === params.email) return
+    onParamsChange({ name: debouncedName, email: debouncedEmail })
+  }, [debouncedName, debouncedEmail, onParamsChange, params.name, params.email])
 
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
@@ -89,5 +88,5 @@ export function UsersSearch({ params, onParamsChange }: UsersSearchProps) {
         </Select>
       </div>
     </div>
-  );
+  )
 }

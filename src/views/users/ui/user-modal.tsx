@@ -43,20 +43,20 @@ export function UserModal({ user, open, onOpenChange }: UserModalProps) {
           <DialogDescription>@{user.username}</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-5">
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 bg-muted/50 p-4 rounded-lg border border-muted">
             <SectionTitle>Contact</SectionTitle>
             <DetailRow label="Email" value={user.email} />
             <DetailRow label="Phone" value={user.phone} />
             <DetailRow label="Website" value={user.website} />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 bg-muted/50 p-4 rounded-lg border border-muted">
             <SectionTitle>Address</SectionTitle>
             <DetailRow label="Street" value={user.address.street} />
             <DetailRow label="Suite" value={user.address.suite} />
             <DetailRow label="City" value={user.address.city} />
             <DetailRow label="Zipcode" value={user.address.zipcode} />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 bg-muted/50 p-4 rounded-lg border border-muted">
             <SectionTitle>Company</SectionTitle>
             <DetailRow label="Name" value={user.company.name} />
             <DetailRow label="Catch Phrase" value={user.company.catchPhrase} />

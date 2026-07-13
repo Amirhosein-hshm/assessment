@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useState, useMemo } from "react"
-import { AlertCircle } from "lucide-react"
-import { useUsers } from "../model/use-users"
-import { useUrlParams } from "../model/use-url-params"
-import { UsersSearch } from "./users-search"
-import { UsersTable } from "./users-table"
-import { UserModal } from "./user-modal"
-import type { User } from "../model/user"
+import { useState, useMemo } from "react";
+import { AlertCircle } from "lucide-react";
+import { useUsers } from "../model/use-users";
+import { useUrlParams } from "../model/use-url-params";
+import { UsersSearch } from "./users-search";
+import { UsersTable } from "./users-table";
+import { UserModal } from "./user-modal";
+import type { User } from "../model/user";
 
 function ErrorState({ message }: { message: string }) {
   return (
@@ -15,47 +15,49 @@ function ErrorState({ message }: { message: string }) {
       <AlertCircle className="size-8 text-destructive" />
       <p className="text-sm text-destructive">{message}</p>
     </div>
-  )
+  );
 }
 
 export function UsersPage() {
-  const { data: users, isLoading, error } = useUsers()
-  const { params, debouncedPushParams } = useUrlParams()
-  const [selectedUser, setSelectedUser] = useState<User | null>(null)
-  const [modalOpen, setModalOpen] = useState(false)
+  const { data: users, isLoading, error } = useUsers();
+  const { params, pushParams } = useUrlParams();
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const filteredUsers = useMemo(() => {
-    if (!users) return []
+    if (!users) return [];
 
-    let result = [...users]
+    let result = [...users];
 
     if (params.name) {
-      const q = params.name.toLowerCase()
-      result = result.filter((u) => u.name.toLowerCase().includes(q))
+      const q = params.name.toLowerCase();
+      result = result.filter((u) => u.name.toLowerCase().includes(q));
     }
     if (params.email) {
-      const q = params.email.toLowerCase()
-      result = result.filter((u) => u.email.toLowerCase().includes(q))
+      const q = params.email.toLowerCase();
+      result = result.filter((u) => u.email.toLowerCase().includes(q));
     }
 
     result.sort((a, b) => {
-      const aVal = params.sortBy === "name" ? a.name.toLowerCase() : a.email.toLowerCase()
-      const bVal = params.sortBy === "name" ? b.name.toLowerCase() : b.email.toLowerCase()
+      const aVal =
+        params.sortBy === "name" ? a.name.toLowerCase() : a.email.toLowerCase();
+      const bVal =
+        params.sortBy === "name" ? b.name.toLowerCase() : b.email.toLowerCase();
       return params.sortOrder === "asc"
         ? aVal.localeCompare(bVal)
-        : bVal.localeCompare(aVal)
-    })
+        : bVal.localeCompare(aVal);
+    });
 
-    return result
-  }, [users, params])
+    return result;
+  }, [users, params]);
 
   function handleSelectUser(user: User) {
-    setSelectedUser(user)
-    setModalOpen(true)
+    setSelectedUser(user);
+    setModalOpen(true);
   }
 
   if (error) {
-    return <ErrorState message={error.message} />
+    return <ErrorState message={error.message} />;
   }
 
   return (
@@ -68,7 +70,7 @@ export function UsersPage() {
           Manage and view user profiles.
         </p>
       </div>
-      <UsersSearch params={params} onParamsChange={debouncedPushParams} />
+      <UsersSearch params={params} onParamsChange={pushParams} />
       <UsersTable
         users={filteredUsers}
         isLoading={isLoading}
@@ -81,5 +83,5 @@ export function UsersPage() {
         onOpenChange={setModalOpen}
       />
     </div>
-  )
+  );
 }

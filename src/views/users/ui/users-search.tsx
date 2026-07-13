@@ -1,58 +1,40 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import { Input } from "@/shared/ui/input"
+import { useState, useEffect } from "react";
+import { Input } from "@/shared/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/ui/select"
-import { SearchIcon, ArrowUpDownIcon } from "lucide-react"
-import type { SortField, SortOrder } from "../model/user"
-import type { UrlParams } from "../model/user"
+} from "@/shared/ui/select";
+import { SearchIcon, ArrowUpDownIcon } from "lucide-react";
+import type { SortField, SortOrder, UrlParams } from "../model/user";
 
 interface UsersSearchProps {
-  params: UrlParams
-  onParamsChange: (updates: Partial<UrlParams>) => void
+  params: UrlParams;
+  onParamsChange: (updates: Partial<UrlParams>) => void;
 }
 
 export function UsersSearch({ params, onParamsChange }: UsersSearchProps) {
-  const [name, setName] = useState(params.name)
-  const [email, setEmail] = useState(params.email)
-  const mounted = useRef(false)
-  const externalSync = useRef(false)
+  const [name, setName] = useState(params.name);
+  const [email, setEmail] = useState(params.email);
 
   useEffect(() => {
-    mounted.current = true
-  }, [])
+    setName(params.name);
+    setEmail(params.email);
+  }, [params.name, params.email]);
 
   useEffect(() => {
-    if (!mounted.current) return
-    externalSync.current = true
-    setName(params.name)
-    setEmail(params.email)
-    requestAnimationFrame(() => {
-      externalSync.current = false
-    })
-  }, [params.name, params.email])
+    if (name === params.name && email === params.email) return;
 
-  useEffect(() => {
-    if (!mounted.current || externalSync.current) return
     const timer = setTimeout(() => {
-      onParamsChange({ name, sortBy: "name" })
-    }, 500)
-    return () => clearTimeout(timer)
-  }, [name, onParamsChange])
+      onParamsChange({ name, email });
+    }, 400);
 
-  useEffect(() => {
-    if (!mounted.current || externalSync.current) return
-    const timer = setTimeout(() => {
-      onParamsChange({ email, sortBy: "email" })
-    }, 500)
-    return () => clearTimeout(timer)
-  }, [email, onParamsChange])
+    return () => clearTimeout(timer);
+  }, [name, email, onParamsChange, params.name, params.email]);
 
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
@@ -77,12 +59,12 @@ export function UsersSearch({ params, onParamsChange }: UsersSearchProps) {
       <div className="flex gap-2">
         <Select
           value={params.sortBy}
-          onValueChange={(value: string | null) =>
+          onValueChange={(value) =>
             value && onParamsChange({ sortBy: value as SortField })
           }
         >
           <SelectTrigger className="w-[130px]">
-            <ArrowUpDownIcon className="size-4" />
+            <ArrowUpDownIcon className="size-4 mr-2" />
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -90,9 +72,10 @@ export function UsersSearch({ params, onParamsChange }: UsersSearchProps) {
             <SelectItem value="email">Email</SelectItem>
           </SelectContent>
         </Select>
+
         <Select
           value={params.sortOrder}
-          onValueChange={(value: string | null) =>
+          onValueChange={(value) =>
             value && onParamsChange({ sortOrder: value as SortOrder })
           }
         >
@@ -106,5 +89,5 @@ export function UsersSearch({ params, onParamsChange }: UsersSearchProps) {
         </Select>
       </div>
     </div>
-  )
+  );
 }

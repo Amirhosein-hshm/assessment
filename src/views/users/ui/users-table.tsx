@@ -76,23 +76,24 @@ export function UsersTable({ users, isLoading, hasFilters = false, onSelectUser 
   })
 
   return (
-    <div className="rounded-lg border min-w-[800px]">
-      <Table className="min-w-[800px]">
-        <TableHeader>
-          <TableRow className={`grid ${gridCols}`}>
-            <TableHead>Name</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Phone</TableHead>
-            <TableHead>Company</TableHead>
-          </TableRow>
-        </TableHeader>
-      </Table>
-      <div
-        ref={scrollRef}
-        className="overflow-auto"
-        style={{ maxHeight: "calc(100vh - 280px)" }}
-      >
-        <Table className="min-w-[800px]">
+    <div className="w-full overflow-x-auto rounded-lg border">
+      <div className="min-w-[800px]">
+        <Table>
+          <TableHeader>
+            <TableRow className={`grid ${gridCols}`}>
+              <TableHead>Name</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Phone</TableHead>
+              <TableHead>Company</TableHead>
+            </TableRow>
+          </TableHeader>
+        </Table>
+        <div
+          ref={scrollRef}
+          className="overflow-y-auto"
+          style={{ maxHeight: "calc(100vh - 280px)" }}
+        >
+          <Table>
           {isLoading ? (
             <SkeletonRows />
           ) : users.length === 0 ? (
@@ -150,5 +151,6 @@ export function UsersTable({ users, isLoading, hasFilters = false, onSelectUser 
         </Table>
       </div>
     </div>
+  </div>
   )
 }
